@@ -94,79 +94,79 @@ resource "aws_security_group" "ALL-server-sg" {
   #this is for elastic ip integration with the specific server/ec2
 
 }
-resource "aws_eip" "fork8s-server1" {
-  instance = aws_instance.kubernests-M-1.id
-}
+# resource "aws_eip" "fork8s-server1" {
+#   instance = aws_instance.kubernests-M-1.id
+# }
 
-# this is for creating the ec2 with all and packeges need to install
-resource "aws_instance" "kubernests-M-1" {
+# # this is for creating the ec2 with all and packeges need to install
+# resource "aws_instance" "kubernests-M-1" {
 
-  ami             = "ami-0b8b44ec9a8f90422"
-  instance_type   = "t2.medium"
-  security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name        = "key"
+#   ami             = "ami-0b8b44ec9a8f90422"
+#   instance_type   = "t2.medium"
+#   security_groups = [aws_security_group.ALL-server-sg.name]
+#   key_name        = "key"
 
-  user_data = templatefile("./k8s-M.sh", {})
-  root_block_device {
-    volume_size = 25
-    volume_type = "gp2"
-  }
+#   user_data = templatefile("./k8s-M.sh", {})
+#   root_block_device {
+#     volume_size = 25
+#     volume_type = "gp2"
+#   }
 
-  tags = {
-    Name = "Master1"
-  }
+#   tags = {
+#     Name = "Master1"
+#   }
 
-  associate_public_ip_address = true
+#   associate_public_ip_address = true
 
-}
-
-
-resource "aws_eip" "fork8s-server2" {
-  instance = aws_instance.kubernests-S-1.id
-}
-resource "aws_instance" "kubernests-S-1" {
-
-  ami             = "ami-0b8b44ec9a8f90422"
-  instance_type   = "t2.medium"
-  security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name        = "key"
-  user_data       = templatefile("./k8s-M-S.sh", {})
-  root_block_device {
-    volume_size = 25
-    volume_type = "gp3"
-  }
+# }
 
 
-  tags = {
-    Name = "Slave1"
-  }
+# resource "aws_eip" "fork8s-server2" {
+#   instance = aws_instance.kubernests-S-1.id
+# }
+# resource "aws_instance" "kubernests-S-1" {
 
-  associate_public_ip_address = true
+#   ami             = "ami-0b8b44ec9a8f90422"
+#   instance_type   = "t2.medium"
+#   security_groups = [aws_security_group.ALL-server-sg.name]
+#   key_name        = "key"
+#   user_data       = templatefile("./k8s-M-S.sh", {})
+#   root_block_device {
+#     volume_size = 25
+#     volume_type = "gp3"
+#   }
 
-}
 
-resource "aws_eip" "fork8s-server3" {
-  instance = aws_instance.kubernests-S-2.id
-}
-resource "aws_instance" "kubernests-S-2" {
+#   tags = {
+#     Name = "Slave1"
+#   }
 
-  ami             = "ami-0b8b44ec9a8f90422"
-  instance_type   = "t2.medium"
-  security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name        = "key"
-  user_data       = templatefile("./k8s-M-S.sh", {})
-  root_block_device {
-    volume_size = 25
-    volume_type = "gp3"
-  }
+#   associate_public_ip_address = true
 
-  tags = {
-    Name = "Slave2"
-  }
+# }
 
-  associate_public_ip_address = true
+# resource "aws_eip" "fork8s-server3" {
+#   instance = aws_instance.kubernests-S-2.id
+# }
+# resource "aws_instance" "kubernests-S-2" {
 
-}
+#   ami             = "ami-0b8b44ec9a8f90422"
+#   instance_type   = "t2.medium"
+#   security_groups = [aws_security_group.ALL-server-sg.name]
+#   key_name        = "key"
+#   user_data       = templatefile("./k8s-M-S.sh", {})
+#   root_block_device {
+#     volume_size = 25
+#     volume_type = "gp3"
+#   }
+
+#   tags = {
+#     Name = "Slave2"
+#   }
+
+#   associate_public_ip_address = true
+
+# }
 
 resource "aws_eip" "sonar-server" {
   instance = aws_instance.sonar-server.id
