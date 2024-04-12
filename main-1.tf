@@ -70,7 +70,7 @@ resource "aws_security_group" "ALL-server-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-   ingress {
+  ingress {
     description = "port for nexsus"
     from_port   = 8081
     to_port     = 8081
@@ -98,15 +98,15 @@ resource "aws_security_group" "ALL-server-sg" {
 #   instance = aws_instance.kubernests-M-1.id
 # }
 
-# # this is for creating the ec2 with all and packeges need to install
+# this is for creating the ec2 with all and packeges need to install
 # resource "aws_instance" "kubernests-M-1" {
 
-#   ami             = "ami-0b8b44ec9a8f90422"
+#   ami             = var.OS-east-1
 #   instance_type   = "t2.medium"
 #   security_groups = [aws_security_group.ALL-server-sg.name]
 #   key_name        = "key"
 
-#   user_data = templatefile("./k8s-M.sh", {})
+#   # user_data = templatefile("./k8s-M.sh", {})
 #   root_block_device {
 #     volume_size = 25
 #     volume_type = "gp2"
@@ -121,16 +121,16 @@ resource "aws_security_group" "ALL-server-sg" {
 # }
 
 
-# resource "aws_eip" "fork8s-server2" {
-#   instance = aws_instance.kubernests-S-1.id
-# }
+# # resource "aws_eip" "fork8s-server2" {
+# #   instance = aws_instance.kubernests-S-1.id
+# # }
 # resource "aws_instance" "kubernests-S-1" {
 
-#   ami             = "ami-0b8b44ec9a8f90422"
+#   ami             = var.OS-east-1
 #   instance_type   = "t2.medium"
 #   security_groups = [aws_security_group.ALL-server-sg.name]
 #   key_name        = "key"
-#   user_data       = templatefile("./k8s-M-S.sh", {})
+#   # user_data       = templatefile("./k8s-M-S.sh", {})
 #   root_block_device {
 #     volume_size = 25
 #     volume_type = "gp3"
@@ -145,16 +145,16 @@ resource "aws_security_group" "ALL-server-sg" {
 
 # }
 
-# resource "aws_eip" "fork8s-server3" {
-#   instance = aws_instance.kubernests-S-2.id
-# }
+# # resource "aws_eip" "fork8s-server3" {
+# #   instance = aws_instance.kubernests-S-2.id
+# # }
 # resource "aws_instance" "kubernests-S-2" {
 
-#   ami             = "ami-0b8b44ec9a8f90422"
+#   ami             = var.OS-east-1
 #   instance_type   = "t2.medium"
 #   security_groups = [aws_security_group.ALL-server-sg.name]
 #   key_name        = "key"
-#   user_data       = templatefile("./k8s-M-S.sh", {})
+#   # user_data       = templatefile("./k8s-M-S.sh", {})
 #   root_block_device {
 #     volume_size = 25
 #     volume_type = "gp3"
@@ -168,51 +168,51 @@ resource "aws_security_group" "ALL-server-sg" {
 
 # }
 
-resource "aws_eip" "sonar-server" {
-  instance = aws_instance.sonar-server.id
-}
-resource "aws_instance" "sonar-server" {
+# resource "aws_eip" "sonar-server" {
+#   instance = aws_instance.sonar-server.id
+# }
+# resource "aws_instance" "sonar-server" {
 
-  ami             = "ami-0b8b44ec9a8f90422"
-  instance_type   = "t2.medium"
-  security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name        = "key"
-  user_data       = templatefile("./sonar.sh", {})
-  root_block_device {
-    volume_size = 15
-    volume_type = "gp3"
-  }
+#   ami             = var.OS-east-1
+#   instance_type   = "t2.medium"
+#   security_groups = [aws_security_group.ALL-server-sg.name]
+#   key_name        = "key"
+#   user_data       = templatefile("./sonar.sh", {})
+#   root_block_device {
+#     volume_size = 15
+#     volume_type = "gp3"
+#   }
 
-  tags = {
-    Name = "Sonarqube"
-  }
+#   tags = {
+#     Name = "Sonarqube"
+#   }
 
-  associate_public_ip_address = true
+#   associate_public_ip_address = true
 
-}
-resource "aws_eip" "nexsus-server" {
-  instance = aws_instance.nexsus-server.id
-}
+# }
+# resource "aws_eip" "nexsus-server" {
+#   instance = aws_instance.nexsus-server.id
+# }
 
-resource "aws_instance" "nexsus-server" {
+# resource "aws_instance" "nexsus-server" {
 
-  ami             = "ami-0b8b44ec9a8f90422"
-  instance_type   = "t2.medium"
-  security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name        = "key"
-  user_data       = templatefile("./nexsus.sh", {})
-  root_block_device {
-    volume_size = 15
-    volume_type = "gp3"
-  }
+#   ami             = var.OS-east-1
+#   instance_type   = "t2.medium"
+#   security_groups = [aws_security_group.ALL-server-sg.name]
+#   key_name        = "key"
+#   user_data       = templatefile("./nexsus.sh", {})
+#   root_block_device {
+#     volume_size = 15
+#     volume_type = "gp3"
+#   }
 
-  tags = {
-    Name = "nexsus"
-  }
+#   tags = {
+#     Name = "nexsus"
+#   }
 
-  associate_public_ip_address = true
+#   associate_public_ip_address = true
 
-}
+# }
 
 resource "aws_eip" "jenkins-server" {
   instance = aws_instance.jenkins-server.id
@@ -220,11 +220,12 @@ resource "aws_eip" "jenkins-server" {
 
 resource "aws_instance" "jenkins-server" {
 
-  ami             = "ami-0b8b44ec9a8f90422"
-  instance_type   = "t2.large"
-  security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name        = "key"
-  user_data       = templatefile("./jenkins.sh", {})
+  ami                  = var.OS-east-1
+  instance_type        = "t2.large"
+  security_groups      = [aws_security_group.ALL-server-sg.name]
+  key_name             = "key"
+  user_data            = templatefile("./jenkins.sh", {})
+  iam_instance_profile = data.aws_iam_instance_profile.existing_role.role_name
   root_block_device {
     volume_size = 25
     volume_type = "gp3"
