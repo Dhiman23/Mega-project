@@ -91,7 +91,6 @@ resource "aws_security_group" "ALL-server-sg" {
   }
 
 
-  #this is for elastic ip integration with the specific server/ec2
 
 }
 
@@ -99,35 +98,35 @@ resource "aws_security_group" "ALL-server-sg" {
 
 resource "aws_instance" "Master" {
 
-  ami = var.OS-east-1
-  instance_type = "medium"
+  ami             = var.OS-east-1
+  instance_type   = var.kube-server
   security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name = "key-2024"
-  user_data = templatefile("./Kubeadm-master-Slave.sh",{})
+  key_name        = "key-2024"
+  user_data       = templatefile("./Kubeadm-master-Slave.sh", {})
 
-   root_block_device {
+  root_block_device {
     volume_size = 25
     volume_type = "gp3"
   }
 
   tags = {
-    Name = "main-server"
+    Name = "Master"
   }
 
   associate_public_ip_address = true
-  
+
 }
 
 
 resource "aws_instance" "Slave1" {
 
-  ami = var.OS-east-1
-  instance_type = "medium"
+  ami             = var.OS-east-1
+  instance_type   = var.kube-server
   security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name = "key-2024"
-  user_data = templatefile("./Kubeadm-master-Slave.sh",{})
+  key_name        = "key-2024"
+  user_data       = templatefile("./Kubeadm-master-Slave.sh", {})
 
-   root_block_device {
+  root_block_device {
     volume_size = 25
     volume_type = "gp3"
   }
@@ -137,18 +136,18 @@ resource "aws_instance" "Slave1" {
   }
 
   associate_public_ip_address = true
-  
+
 }
 
 resource "aws_instance" "Slave2" {
 
-  ami = var.OS-east-1
-  instance_type = "medium"
+  ami             = var.OS-east-1
+  instance_type   = var.kube-server
   security_groups = [aws_security_group.ALL-server-sg.name]
-  key_name = "key-2024"
-  user_data = templatefile("./Kubeadm-master-Slave.sh",{})
+  key_name        = "key-2024"
+  user_data       = templatefile("./Kubeadm-master-Slave.sh", {})
 
-   root_block_device {
+  root_block_device {
     volume_size = 25
     volume_type = "gp3"
   }
@@ -158,17 +157,17 @@ resource "aws_instance" "Slave2" {
   }
 
   associate_public_ip_address = true
-  
+
 }
 
 
 resource "aws_instance" "jenkins-server" {
 
-  ami                  = var.OS-east-1
-  instance_type        = "t2.large"
-  security_groups      = [aws_security_group.ALL-server-sg.name]
-  key_name             = "key-2024"
-  user_data            = templatefile("./jenkins.sh", {})
+  ami             = var.OS-east-1
+  instance_type   = var.main-server
+  security_groups = [aws_security_group.ALL-server-sg.name]
+  key_name        = "key-2024"
+  user_data       = templatefile("./jenkins.sh", {})
   root_block_device {
     volume_size = 25
     volume_type = "gp3"
