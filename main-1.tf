@@ -94,152 +94,91 @@ resource "aws_security_group" "ALL-server-sg" {
   #this is for elastic ip integration with the specific server/ec2
 
 }
-# resource "aws_eip" "fork8s-server1" {
-#   instance = aws_instance.kubernests-M-1.id
-# }
-
-# this is for creating the ec2 with all and packeges need to install
-# resource "aws_instance" "kubernests-M-1" {
-
-#   ami             = var.OS-east-1
-#   instance_type   = "t2.medium"
-#   security_groups = [aws_security_group.ALL-server-sg.name]
-#   key_name        = "key"
-
-#   # user_data = templatefile("./k8s-M.sh", {})
-#   root_block_device {
-#     volume_size = 25
-#     volume_type = "gp2"
-#   }
-
-#   tags = {
-#     Name = "Master1"
-#   }
-
-#   associate_public_ip_address = true
-
-# }
 
 
-# # resource "aws_eip" "fork8s-server2" {
-# #   instance = aws_instance.kubernests-S-1.id
-# # }
-# resource "aws_instance" "kubernests-S-1" {
 
-#   ami             = var.OS-east-1
-#   instance_type   = "t2.medium"
-#   security_groups = [aws_security_group.ALL-server-sg.name]
-#   key_name        = "key"
-#   # user_data       = templatefile("./k8s-M-S.sh", {})
-#   root_block_device {
-#     volume_size = 25
-#     volume_type = "gp3"
-#   }
+resource "aws_instance" "Master" {
 
+  ami = var.OS-east-1
+  instance_type = "medium"
+  security_groups = [aws_security_group.ALL-server-sg.name]
+  key_name = "key-2024"
+  user_data = templatefile("./Kubeadm-master-Slave.sh",{})
 
-#   tags = {
-#     Name = "Slave1"
-#   }
+   root_block_device {
+    volume_size = 25
+    volume_type = "gp3"
+  }
 
-#   associate_public_ip_address = true
+  tags = {
+    Name = "main-server"
+  }
 
-# }
-
-# # resource "aws_eip" "fork8s-server3" {
-# #   instance = aws_instance.kubernests-S-2.id
-# # }
-# resource "aws_instance" "kubernests-S-2" {
-
-#   ami             = var.OS-east-1
-#   instance_type   = "t2.medium"
-#   security_groups = [aws_security_group.ALL-server-sg.name]
-#   key_name        = "key"
-#   # user_data       = templatefile("./k8s-M-S.sh", {})
-#   root_block_device {
-#     volume_size = 25
-#     volume_type = "gp3"
-#   }
-
-#   tags = {
-#     Name = "Slave2"
-#   }
-
-#   associate_public_ip_address = true
-
-# }
-
-# resource "aws_eip" "sonar-server" {
-#   instance = aws_instance.sonar-server.id
-# }
-# resource "aws_instance" "sonar-server" {
-
-#   ami             = var.OS-east-1
-#   instance_type   = "t2.medium"
-#   security_groups = [aws_security_group.ALL-server-sg.name]
-#   key_name        = "key"
-#   user_data       = templatefile("./sonar.sh", {})
-#   root_block_device {
-#     volume_size = 15
-#     volume_type = "gp3"
-#   }
-
-#   tags = {
-#     Name = "Sonarqube"
-#   }
-
-#   associate_public_ip_address = true
-
-# }
-# resource "aws_eip" "nexsus-server" {
-#   instance = aws_instance.nexsus-server.id
-# }
-
-# resource "aws_instance" "nexsus-server" {
-
-#   ami             = var.OS-east-1
-#   instance_type   = "t2.medium"
-#   security_groups = [aws_security_group.ALL-server-sg.name]
-#   key_name        = "key"
-#   user_data       = templatefile("./nexsus.sh", {})
-#   root_block_device {
-#     volume_size = 15
-#     volume_type = "gp3"
-#   }
-
-#   tags = {
-#     Name = "nexsus"
-#   }
-
-#   associate_public_ip_address = true
-
-# }
-
-resource "aws_eip" "jenkins-server" {
-  instance = aws_instance.jenkins-server.id
+  associate_public_ip_address = true
+  
 }
+
+
+resource "aws_instance" "Slave1" {
+
+  ami = var.OS-east-1
+  instance_type = "medium"
+  security_groups = [aws_security_group.ALL-server-sg.name]
+  key_name = "key-2024"
+  user_data = templatefile("./Kubeadm-master-Slave.sh",{})
+
+   root_block_device {
+    volume_size = 25
+    volume_type = "gp3"
+  }
+
+  tags = {
+    Name = "Slave"
+  }
+
+  associate_public_ip_address = true
+  
+}
+
+resource "aws_instance" "Slave2" {
+
+  ami = var.OS-east-1
+  instance_type = "medium"
+  security_groups = [aws_security_group.ALL-server-sg.name]
+  key_name = "key-2024"
+  user_data = templatefile("./Kubeadm-master-Slave.sh",{})
+
+   root_block_device {
+    volume_size = 25
+    volume_type = "gp3"
+  }
+
+  tags = {
+    Name = "Slave-2"
+  }
+
+  associate_public_ip_address = true
+  
+}
+
 
 resource "aws_instance" "jenkins-server" {
 
   ami                  = var.OS-east-1
   instance_type        = "t2.large"
   security_groups      = [aws_security_group.ALL-server-sg.name]
-  key_name             = "key"
+  key_name             = "key-2024"
   user_data            = templatefile("./jenkins.sh", {})
-  iam_instance_profile = data.aws_iam_instance_profile.existing_role.role_name
   root_block_device {
     volume_size = 25
     volume_type = "gp3"
   }
 
   tags = {
-    Name = "Jenkins"
+    Name = "main-server"
   }
 
   associate_public_ip_address = true
 
 }
 
-
-# output "aws_eip" {
-#   value = [aws_instance.kubernests-M-1.public_ip,aws_instance.kubernestes-S-1.public_ip, aws_instance.kubernests-S-2.public_ip,aws_instance.sonar-server.public_ip,aws_instance.nexsus-server.public_ip,aws_instance.jenkins-server.public_ip]
-# }

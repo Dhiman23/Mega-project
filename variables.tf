@@ -1,5 +1,5 @@
 variable "OS-east-1" {
-  default = "ami-007020fd9c84e18c7"
+  default = "ami-04b70fa74e45c3917"
 }
 
 variable "role_name" {

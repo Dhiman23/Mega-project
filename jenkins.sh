@@ -22,6 +22,10 @@ sudo chmod 666 /var/run/docker.sock
 
 sudo docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 
+#nexsus instalation
+
+sudo docker run -d --name nexus -p 8081:8081 sonatype/nexus3:latest
+
 # installation on trivy,terraform,kubectl,awscli
 
 sudo apt-get install wget apt-transport-https gnupg lsb-release -y
